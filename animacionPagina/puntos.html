@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Scientist Background</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(to bottom, #2e4f4f, #254746, #1b3837);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Noise background effect */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 182px;
+            opacity: 0.12;
+            pointer-events: none;
+        }
+
+        .blob {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+            border-radius: 50%;
+            filter: blur(50px);
+            animation: move 8s ease-in-out infinite;
+        }
+
+        .data-points {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .data-point {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: #a9dbdb;
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+
+        @keyframes move {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(calc(100vw - 200px), -100px);
+            }
+            50% {
+                transform: translate(0, calc(100vh - 200px));
+            }
+            75% {
+                transform: translate(calc(100vw - 200px), calc(100vh - 200px));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="blob"></div>
+    <div class="data-points" id="dataPointsContainer"></div>
+
+    <script>
+        function createDataPoints() {
+            const container = document.getElementById('dataPointsContainer');
+            const pointCount = 500; // Total number of points
+            const densityAreas = [
+                { x: 0.2, y: 0.3, density: 3 },   // High density area
+                { x: 0.7, y: 0.6, density: 0.5 }, // Low density area
+                { x: 0.4, y: 0.8, density: 2 },   // Medium density area
+                { x: 0.9, y: 0.2, density: 1 }    // Sparse area
+            ];
+
+            for (let i = 0; i < pointCount; i++) {
+                const point = document.createElement('div');
+                point.classList.add('data-point');
+
+                // Choose a density area
+                const area = densityAreas[Math.floor(Math.random() * densityAreas.length)];
+
+                // Calculate position with area-based density
+                const x = (area.x + (Math.random() - 0.5) * area.density) * window.innerWidth;
+                const y = (area.y + (Math.random() - 0.5) * area.density) * window.innerHeight;
+
+                point.style.left = `${x}px`;
+                point.style.top = `${y}px`;
+
+                // Optional: Randomize point size slightly
+                const size = 2 + Math.random();
+                point.style.width = `${size}px`;
+                point.style.height = `${size}px`;
+
+                container.appendChild(point);
+            }
+        }
+
+        // Create points on load and resize
+        createDataPoints();
+        window.addEventListener('resize', () => {
+            const container = document.getElementById('dataPointsContainer');
+            container.innerHTML = ''; // Clear existing points
+            createDataPoints(); // Recreate points
+        });
+    </script>
+</body>
+</html>
